@@ -25,18 +25,19 @@ def load_data_from_db(db):
     
     return pd.DataFrame(data)
 
-def train_and_save_model(df_train: pd.DataFrame):
-    """Тренує модель, зберігає її та препроцесор."""
-    
+def train_and_save_model(df_train):
     X_train, y_train, _ = preprocess_data(df_train)
-    
-    # Тренування моделі
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+    model = RandomForestClassifier(
+        n_estimators=50,
+        max_depth=5,
+        max_features="sqrt",
+        random_state=42
+    )
+
     model.fit(X_train, y_train)
-    
-    # Зберігання моделі
-    joblib.dump(model, MODEL_PATH)
-    
+
+    joblib.dump(model, "models/obesity_classifier.joblib")
     return model
 
 def load_model():
